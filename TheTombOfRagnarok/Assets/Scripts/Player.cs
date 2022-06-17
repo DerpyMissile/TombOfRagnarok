@@ -61,6 +61,18 @@ public class Player : MonoBehaviour
         }
         return this;
     }
+
+    public int getHP(){
+        return hp;
+    }
+
+    public int getAtk(){
+        return atk;
+    }
+
+    public int getMovement(){
+        return movement;
+    }
     // Start is called before the first frame update
     void Start()
     {

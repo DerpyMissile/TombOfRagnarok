@@ -1,13 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Battle : MonoBehaviour
 {
+    [SerializeField] Text myText;
+    int turn = 1;
+    int playerMana = 0;
+    int enemyMana = 0;
+    int maxMana = 0;
+    [SerializeField] Player playerCharac;
+    [SerializeField] Enemy enemyCharac;
+    bool placedCharac = false;
+    bool isPlayerTurn = true;
+
+    Battle(Player mc, Enemy nc){
+        playerCharac = mc;
+        enemyCharac = nc;
+    }
+
+    void enemyTurn(){
+        maxMana++;
+        goMoveEnemy();
+        summonIfPossible();
+        attackIfCan();
+    }
+
+    void goMove(){
+        myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
+    }
+
+    void summonIfWant(){
+
+    }
+
+    void attackIfWant(){
+
+    }
+
+    void goMoveEnemy(){
+
+    }
+
+    void summonIfPossible(){
+
+    }
+
+    void attackIfCan(){
+
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        myText.text = "Pick a square to place your player!";
     }
 
     // Update is called once per frame
@@ -28,6 +74,23 @@ public class Battle : MonoBehaviour
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
+            GameObject hitObject = hit.collider.transform.gameObject;
+            Debug.Log(hitObject.name);
+            if(!placedCharac && Input.GetMouseButtonDown(0)){
+                playerCharac.transform.position = hitObject.transform.position + new Vector3(0, 1, 0);
+                placedCharac = true;
+            }
+            if(isPlayerTurn){
+                maxMana++;
+                playerMana = maxMana;
+                goMove();
+                summonIfWant();
+                attackIfWant();
+                turn++;
+                isPlayerTurn = false;
+            }else{
+                isPlayerTurn = true;
+            }
         }
         else
         {
