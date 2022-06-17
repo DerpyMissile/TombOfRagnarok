@@ -8,10 +8,12 @@ public class Battle : MonoBehaviour
     [SerializeField] Text myText;
     [SerializeField] Text myText2;
     [SerializeField] Text myText3;
+    [SerializeField] Button nextPhase;
     int turn = 1;
     int playerMana = 0;
     int enemyMana = 0;
     int maxMana = 0;
+    int phaseNumber = 1;
     [SerializeField] Player playerCharac;
     [SerializeField] Enemy enemyCharac;
     bool placedCharac = false;
@@ -29,12 +31,43 @@ public class Battle : MonoBehaviour
         attackIfCan();
     }
 
-    void goMove(){
-        myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
+    void increasePhase(){
+        phaseNumber++;
+    }
+
+    void goMove(GameObject moveTo){
+        int movesLeft = playerCharac.getMovement();
+        while(movesLeft>0 || phaseNumber==2){
+            myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
+            myText2.text = "Movement Phase";
+            if(moveTo.transform.position.x == playerCharac.transform.position.x){
+                if(Mathf.Abs(moveTo.transform.position.z - playerCharac.transform.position.z) <= movesLeft){
+                    playerCharac.transform.position = moveTo.transform.position + new Vector3(0, 1, 0);
+                    movesLeft -= (int)Mathf.Abs(moveTo.transform.position.z - playerCharac.transform.position.z);
+                }else{
+
+                }
+            }else{
+                if(Mathf.Abs(moveTo.transform.position.x - playerCharac.transform.position.x) <= movesLeft){
+                    playerCharac.transform.position = moveTo.transform.position + new Vector3(0, 1, 0);
+                    movesLeft -= (int)Mathf.Abs(moveTo.transform.position.x - playerCharac.transform.position.x);
+                }else{
+
+                }
+            }
+        }
+        if(phaseNumber == 3){
+
+        }else{
+            phaseNumber++;
+        }
     }
 
     void summonIfWant(){
-
+        while(phaseNumber == 3){
+            myText.text = "Where should I summon?";
+            myText2.text = "Summon Phase";
+        }
     }
 
     void attackIfWant(){
@@ -56,6 +89,9 @@ public class Battle : MonoBehaviour
     void Start()
     {
         myText.text = "Pick a square to place your player!";
+        myText2.text = "Placement Phase";
+        myText3.text = "Current Mana: " + playerMana;
+        nextPhase.onClick.AddListener(increasePhase);
     }
 
     // Update is called once per frame
@@ -81,11 +117,13 @@ public class Battle : MonoBehaviour
             if(!placedCharac && Input.GetMouseButtonDown(0)){
                 playerCharac.transform.position = hitObject.transform.position + new Vector3(0, 1, 0);
                 placedCharac = true;
+                phaseNumber++;
             }
-            if(isPlayerTurn){
+            else if(isPlayerTurn && placedCharac){
                 maxMana++;
                 playerMana = maxMana;
-                goMove();
+                myText3.text = "Current Mana: " + playerMana;
+                //goMove(hitObject);
                 summonIfWant();
                 attackIfWant();
                 turn++;
