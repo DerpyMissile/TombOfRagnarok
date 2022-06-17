@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Battle : MonoBehaviour
 {
     [SerializeField] Text myText;
+    [SerializeField] Text myText2;
+    [SerializeField] Text myText3;
     int turn = 1;
     int playerMana = 0;
     int enemyMana = 0;
