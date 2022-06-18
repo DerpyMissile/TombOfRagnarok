@@ -9,6 +9,12 @@ public class Player : MonoBehaviour
     int atk;
     int movement;
 
+    public Player(){
+        hp = 1;
+        atk = 1;
+        movement = 1;
+    }
+
     public Player setStats(String playerChara){
         switch(playerChara){
             case "Paladin":
