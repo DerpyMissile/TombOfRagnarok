@@ -41,26 +41,35 @@ public class Battle : MonoBehaviour
     }
 
     IEnumerator goMove(){
-        Debug.Log(movesLeft);
-        while(movesLeft>0 && state == BattleState.MOVEPLAYER){
+        //Debug.Log(movesLeft);
+        //yield return new WaitUntil(() => selectedNewMovementLocation);
+        while((movesLeft>0) && (state == BattleState.MOVEPLAYER)){
             yield return new WaitUntil(() => selectedNewMovementLocation);
+            Debug.Log("I have " + movesLeft + " moves left.");
+            Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.z));
+            Debug.Log(Mathf.RoundToInt(playerCharac.transform.position.z));
+            Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.x));
+            Debug.Log(Mathf.RoundToInt(playerCharac.transform.position.x));
             myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
             myText2.text = "Movement Phase";
-            if(moveToWhere.transform.position.x == playerCharac.transform.position.x){
-                if(Mathf.Abs(moveToWhere.transform.position.z - playerCharac.transform.position.z) <= movesLeft){
+            if(Mathf.RoundToInt(moveToWhere.transform.position.x) == Mathf.RoundToInt(playerCharac.transform.position.x)){
+                if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerCharac.transform.position.z)) <= movesLeft){
                     playerCharac.transform.position = moveToWhere.transform.position + new Vector3(0, 1, 0);
-                    movesLeft -= (int)Mathf.Abs(moveToWhere.transform.position.z - playerCharac.transform.position.z);
+                    //movesLeft -= (int)Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerCharac.transform.position.z));
                 }else{
 
                 }
+            }else if((Mathf.RoundToInt(moveToWhere.transform.position.x) != Mathf.RoundToInt(playerCharac.transform.position.x)) && (Mathf.RoundToInt(moveToWhere.transform.position.z) != Mathf.RoundToInt(playerCharac.transform.position.z))){
+                //do nothing
             }else{
-                if(Mathf.Abs(moveToWhere.transform.position.x - playerCharac.transform.position.x) <= movesLeft){
+                if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x)) <= movesLeft){
                     playerCharac.transform.position = moveToWhere.transform.position + new Vector3(0, 1, 0);
-                    movesLeft -= (int)Mathf.Abs(moveToWhere.transform.position.x - playerCharac.transform.position.x);
+                    //movesLeft -= (int)Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x));
                 }else{
 
                 }
             }
+            movesLeft -= Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerCharac.transform.position.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x));
             selectedNewMovementLocation = false;
         }
         movesLeft = playerCharac.getMovement();
@@ -91,8 +100,8 @@ public class Battle : MonoBehaviour
         yield return new WaitUntil(() => placedCharac);
         state = BattleState.MOVEPLAYER;
         Debug.Log("Made it to phase 2");
-        StartCoroutine(goMove());
         StopCoroutine(setUpBoard());
+        StartCoroutine(goMove());
     }
     // Start is called before the first frame update
     void Start()
@@ -127,7 +136,7 @@ public class Battle : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             //Debug.Log("Did Hit");
             GameObject hitObject = hit.collider.transform.gameObject;
-            Debug.Log(hitObject.name);
+            //Debug.Log(hitObject.name);
             if(!placedCharac && Input.GetMouseButtonDown(0)){
                 playerCharac.transform.position = hitObject.transform.position + new Vector3(0, 1, 0);
                 placedCharac = true;
