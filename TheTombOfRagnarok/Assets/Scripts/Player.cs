@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     int hp;
     int atk;
     int movement;
+    int money = 0;
 
     public Player(){
         hp = 1;

@@ -43,8 +43,10 @@ public class Battle : MonoBehaviour
     IEnumerator goMove(){
         //Debug.Log(movesLeft);
         //yield return new WaitUntil(() => selectedNewMovementLocation);
+        myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
         while((movesLeft>0) && (state == BattleState.MOVEPLAYER)){
             yield return new WaitUntil(() => selectedNewMovementLocation);
+            Vector3 playerLastPos = playerCharac.transform.position;
             Debug.Log("I have " + movesLeft + " moves left.");
             Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.z));
             Debug.Log(Mathf.RoundToInt(playerCharac.transform.position.z));
@@ -61,15 +63,16 @@ public class Battle : MonoBehaviour
                 }
             }else if((Mathf.RoundToInt(moveToWhere.transform.position.x) != Mathf.RoundToInt(playerCharac.transform.position.x)) && (Mathf.RoundToInt(moveToWhere.transform.position.z) != Mathf.RoundToInt(playerCharac.transform.position.z))){
                 //do nothing
+                movesLeft += Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
             }else{
                 if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x)) <= movesLeft){
                     playerCharac.transform.position = moveToWhere.transform.position + new Vector3(0, 1, 0);
                     //movesLeft -= (int)Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x));
                 }else{
-
+                    movesLeft += Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
                 }
             }
-            movesLeft -= Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerCharac.transform.position.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerCharac.transform.position.x));
+            movesLeft -= Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
             selectedNewMovementLocation = false;
         }
         movesLeft = playerCharac.getMovement();
@@ -141,8 +144,8 @@ public class Battle : MonoBehaviour
                 playerCharac.transform.position = hitObject.transform.position + new Vector3(0, 1, 0);
                 placedCharac = true;
                 moveToWhere = hitObject;
-                selectedNewMovementLocation = true;
-            }else if(state == BattleState.MOVEPLAYER && Input.GetMouseButtonDown(0)){
+                //selectedNewMovementLocation = true;
+            }else if(state == BattleState.MOVEPLAYER && Input.GetMouseButtonDown(0) && (hitObject != moveToWhere)){
                 moveToWhere = hitObject;
                 selectedNewMovementLocation = true;
             }
