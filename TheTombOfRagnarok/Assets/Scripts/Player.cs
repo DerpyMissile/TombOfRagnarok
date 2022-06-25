@@ -5,10 +5,10 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    int hp;
-    int atk;
-    int movement;
-    int money = 0;
+    [SerializeField] int hp;
+    [SerializeField] int atk;
+    [SerializeField] int movement;
+    [SerializeField] int money = 0;
 
     public Player(){
         hp = 1;

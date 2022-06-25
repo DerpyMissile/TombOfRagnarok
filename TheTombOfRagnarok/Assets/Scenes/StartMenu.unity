@@ -1132,6 +1132,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579746981}
   m_CullTransparentMesh: 1
+--- !u!1 &647205366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647205368}
+  - component: {fileID: 647205367}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &647205367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647205366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acac6c1ac56bc4d4aa02687ea88a5497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &647205368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647205366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &651687422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,7 +2185,7 @@ MonoBehaviour:
   magButton: {fileID: 579746983}
   background: {fileID: 1834318585}
   characterScreen: {fileID: 21300000, guid: 730c99a0c4527524cb8c4e63fcef331d, type: 3}
-  ourCharas: []
+  ourCharas: {fileID: 647205366}
 --- !u!1 &1845122254
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,8 @@ public class PlayGame : MonoBehaviour
     [SerializeField] Button magButton;
     [SerializeField] GameObject background;
     [SerializeField] Sprite characterScreen;
-    public List<Player> ourCharas = new List<Player>();
+    //public List<Player> ourCharas = new List<Player>();
+    [SerializeField] GameObject ourCharas;
 
     void playTheGame(){
         Debug.Log("Wassup jimbo");
@@ -31,9 +32,22 @@ public class PlayGame : MonoBehaviour
     }
 
     void selectClass(string whatClass){
-        ourCharas.Add(new Player().setStats(whatClass));
-        SceneManager.LoadScene("Board");
-        SceneManager.UnloadScene("StartMenu");
+        //ourCharas.Add(new Player().setStats(whatClass));
+        ourCharas.GetComponent<Player>().setStats(whatClass);
+        StartCoroutine(actuallyStartGame());
+        //SceneManager.LoadScene("Board");
+        //SceneManager.MoveGameObjectToScene(ourCharas, SceneManager.GetSceneByName("Board"));
+        //SceneManager.UnloadScene("StartMenu");
+    }
+
+    IEnumerator actuallyStartGame(){
+        Scene currentScene = SceneManager.GetActiveScene();
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Board", LoadSceneMode.Additive);
+        while(!asyncload.isDone){
+            yield return null;
+        }
+        SceneManager.MoveGameObjectToScene(ourCharas, SceneManager.GetSceneByName("Board"));
+        SceneManager.UnloadSceneAsync(currentScene);
     }
     // Start is called before the first frame update
     void Start()
