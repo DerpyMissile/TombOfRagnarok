@@ -1,20 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Overworld : MonoBehaviour
 {
     public GameObject player;
     private bool isPlacedDown = false;
+    [SerializeField] Slider howPowerful;
+    [SerializeField] PointerEventData rollDieButton;
 
-    void movePlayerCharacter(){
-
+    IEnumerator movePlayerCharacter(){
+        yield return new WaitUntil(() => isPlacedDown);
     }
+
+    
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = new Vector3(0, 1, 0);
+        StartCoroutine(movePlayerCharacter());
     }
 
     // Update is called once per frame
@@ -41,7 +48,7 @@ public class Overworld : MonoBehaviour
             //Debug.Log(hitObject.name);
             if(!isPlacedDown){
                 player.GetComponent<Rigidbody>().useGravity = false;
-                player.transform.position = hitObject.transform.position;
+                player.transform.position = hitObject.transform.position + new Vector3(0,1,0);
                 player.transform.Rotate(1.0f, 0, 1.0f, Space.Self);
                 if(Input.GetMouseButtonDown(0)){
                     isPlacedDown = true;
