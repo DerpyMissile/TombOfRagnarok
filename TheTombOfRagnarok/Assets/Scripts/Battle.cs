@@ -17,16 +17,20 @@ public class Battle : MonoBehaviour
     int enemyMana = 0;
     int maxMana = 0;
     [SerializeField] Player playerCharac;
-    [SerializeField] Enemy enemyCharac;
+    //[SerializeField] Enemy enemyCharac;
+    List<Enemy> enemies = new List<Enemy>();
     bool placedCharac = false;
     bool isPlayerTurn = true;
     bool selectedNewMovementLocation = false;
+    bool battleOver = false;
     public BattleState state;
     GameObject moveToWhere;
 
-    Battle(Player mc, Enemy nc){
+    public Battle(Player mc, int howManyEnemies, GameObject whatTile){
         playerCharac = mc;
-        enemyCharac = nc;
+        for(int i=0; i<howManyEnemies; ++i){
+            enemies.Add(new Enemy());
+        }
     }
 
     void enemyTurn(){
@@ -99,6 +103,23 @@ public class Battle : MonoBehaviour
 
     }
 
+    void checkIfOver(){
+        if(playerCharac.getHP() <= 0){
+            battleOver = true;
+            return;
+        }
+        for(int i=0; i<enemies.Count; ++i){
+            if(enemies[i].getHP()<=0){
+
+            }else{
+                battleOver = false;
+                return;
+            }
+        }
+        battleOver = true;
+        return;
+    }
+
     IEnumerator setUpBoard(){
         yield return new WaitUntil(() => placedCharac);
         state = BattleState.MOVEPLAYER;
@@ -121,6 +142,7 @@ public class Battle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        checkIfOver();
         // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = 1 << 8;
 

@@ -993,7 +993,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -1348,6 +1348,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acac6c1ac56bc4d4aa02687ea88a5497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 1
+  atk: 1
+  movement: 1
+  money: 0
 --- !u!1 &1146677336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,7 +2657,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
 --- !u!224 &2053028889
 RectTransform:
   m_ObjectHideFlags: 0

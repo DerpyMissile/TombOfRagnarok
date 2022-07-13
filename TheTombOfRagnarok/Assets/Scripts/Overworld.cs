@@ -7,12 +7,81 @@ using UnityEngine.EventSystems;
 public class Overworld : MonoBehaviour
 {
     public GameObject player;
-    private bool isPlacedDown = false;
+    public bool isPlacedDown = false;
+    public bool touchedButton = false;
+    public bool gotNewLocation = false;
+    private int movesLeft = 0;
     [SerializeField] Slider howPowerful;
-    [SerializeField] PointerEventData rollDieButton;
+    [SerializeField] Button rollDieButton;
+    GameObject moveToWhere;
 
     IEnumerator movePlayerCharacter(){
+        Debug.Log("This actually runs");
         yield return new WaitUntil(() => isPlacedDown);
+        Debug.Log("Does it even make it this far");
+        yield return new WaitUntil(() => touchedButton);
+        while(touchedButton){
+            yield return new WaitUntil(() => touchedButton);
+            Debug.Log("hmmm");
+            movesLeft = Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 20)));
+            howPowerful.value = movesLeft;
+        }
+        touchedButton = false;
+        Debug.Log("Made it this far");
+        Debug.Log(howPowerful.value);
+
+        Debug.Log(movesLeft);
+        if(movesLeft > 10){
+            player.GetComponent<Player>().increaseMoney(movesLeft);
+            movesLeft = 0;
+        }
+        while(movesLeft>0){
+            yield return new WaitUntil(() => gotNewLocation);
+            Vector3 playerLastPos = player.transform.position;
+            Debug.Log("I have " + movesLeft + " moves left.");
+            Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.z));
+            Debug.Log(Mathf.RoundToInt(player.transform.position.z));
+            Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.x));
+            Debug.Log(Mathf.RoundToInt(player.transform.position.x));
+            if(Mathf.RoundToInt(moveToWhere.transform.position.x) == Mathf.RoundToInt(player.transform.position.x)){
+                if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(player.transform.position.z)) <= movesLeft){
+                    player.transform.position = moveToWhere.transform.position + new Vector3(0, 1, 0);
+                    //movesLeft -= (int)Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(player.transform.position.z));
+                }else{
+
+                }
+            }else if((Mathf.RoundToInt(moveToWhere.transform.position.x) != Mathf.RoundToInt(player.transform.position.x)) && (Mathf.RoundToInt(moveToWhere.transform.position.z) != Mathf.RoundToInt(player.transform.position.z))){
+                //do nothing
+                movesLeft += Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
+            }else if((Mathf.RoundToInt(moveToWhere.transform.position.x) == Mathf.RoundToInt(player.transform.position.x)) && (Mathf.RoundToInt(moveToWhere.transform.position.z) == Mathf.RoundToInt(player.transform.position.z))){
+                //ends turn
+                Debug.Log("end turn");
+                movesLeft = 0;
+                break;
+            }else{
+                if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(player.transform.position.x)) <= movesLeft){
+                    player.transform.position = moveToWhere.transform.position + new Vector3(0, 1, 0);
+                    //movesLeft -= (int)Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(player.transform.position.x));
+                }else{
+                    movesLeft += Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
+                }
+            }
+            movesLeft -= Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
+            gotNewLocation = false;
+        }
+        gotNewLocation = false;
+        Debug.Log("end end turn kachow");
+
+        //battle start nyoooooom
+        Battle battleStart = new Battle(player.GetComponent<Player>(), Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 4))), moveToWhere);
+    }
+
+    public void buttonHasBeenTouched(){
+        touchedButton = true;
+    }
+
+    public void buttonHasNotBeenTouched(){
+        touchedButton = false;
     }
 
     
@@ -21,12 +90,26 @@ public class Overworld : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = new Vector3(0, 1, 0);
+        rollDieButton.onClick.AddListener(buttonHasBeenTouched);
+        howPowerful.minValue = 1;
+        howPowerful.maxValue = 20;
         StartCoroutine(movePlayerCharacter());
     }
+
+    // public void onPointerDown(PointerEventData rollDieButton){
+    //     touchedButton = true;
+    // }
+
+    // public void onPointerUp(PointerEventData rollDieButton){
+    //     touchedButton = false;
+    // }
 
     // Update is called once per frame
     void Update()
     {
+        //touchedButton = false;
+        if(Input.GetKeyDown(KeyCode.E)) buttonHasBeenTouched();
+        if(Input.GetKeyUp(KeyCode.E)) buttonHasNotBeenTouched();
         // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = 1 << 8;
 
@@ -54,6 +137,9 @@ public class Overworld : MonoBehaviour
                     isPlacedDown = true;
                     player.GetComponent<Rigidbody>().useGravity = true;
                 }
+            }else{
+                moveToWhere = hitObject;
+                gotNewLocation = true;
             }
         }
         else

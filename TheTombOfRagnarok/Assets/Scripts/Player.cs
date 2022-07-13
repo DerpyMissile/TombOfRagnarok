@@ -80,6 +80,10 @@ public class Player : MonoBehaviour
     public int getMovement(){
         return movement;
     }
+
+    public void increaseMoney(int howMuch){
+        money += howMuch;
+    }
     // Start is called before the first frame update
     void Start()
     {

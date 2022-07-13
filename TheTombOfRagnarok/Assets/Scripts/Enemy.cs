@@ -106,6 +106,10 @@ public class Enemy : MonoBehaviour
         }
         return this;
     }
+
+    public int getHP(){
+        return hp;
+    }
     // Start is called before the first frame update
     void Start()
     {

@@ -46,6 +46,7 @@ public class PlayGame : MonoBehaviour
         while(!asyncload.isDone){
             yield return null;
         }
+        PlayerPrefs.SetInt("UnitySelectMonitor", 2);
         SceneManager.MoveGameObjectToScene(ourCharas, SceneManager.GetSceneByName("Board"));
         SceneManager.UnloadSceneAsync(currentScene);
     }
