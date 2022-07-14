@@ -73,6 +73,7 @@ public class Overworld : MonoBehaviour
         Debug.Log("end end turn kachow");
 
         //battle start nyoooooom
+        Player playerOnTheBoard = Instantiate(player.GetComponent<Player>());
         Battle battleStart = new Battle(player.GetComponent<Player>(), Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 4))), moveToWhere);
     }
 
