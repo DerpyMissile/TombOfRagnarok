@@ -1236,7 +1236,6 @@ GameObject:
   - component: {fileID: 1020329125}
   - component: {fileID: 1020329124}
   - component: {fileID: 1020329128}
-  - component: {fileID: 1020329129}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -1336,22 +1335,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1020329129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020329123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acac6c1ac56bc4d4aa02687ea88a5497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 1
-  atk: 1
-  movement: 1
-  money: 0
 --- !u!1 &1146677336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,8 +1798,7 @@ MonoBehaviour:
   myText2: {fileID: 1492680044}
   myText3: {fileID: 1695620651}
   nextPhase: {fileID: 1738008711}
-  playerCharac: {fileID: 1020329129}
-  enemyCharac: {fileID: 0}
+  playerCharac: {fileID: 1020329124}
   state: 0
 --- !u!54 &1474832879
 Rigidbody:

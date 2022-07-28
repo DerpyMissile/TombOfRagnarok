@@ -32,7 +32,7 @@ public class Overworld : MonoBehaviour
 
         Debug.Log(movesLeft);
         if(movesLeft > 10){
-            player.GetComponent<Player>().increaseMoney(movesLeft);
+            Player.increaseMoney(movesLeft);
             movesLeft = 0;
         }
         while(movesLeft>0){
@@ -73,8 +73,8 @@ public class Overworld : MonoBehaviour
         Debug.Log("end end turn kachow");
 
         //battle start nyoooooom
-        Player playerOnTheBoard = Instantiate(player.GetComponent<Player>());
-        Battle battleStart = new Battle(player.GetComponent<Player>(), Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 4))), moveToWhere);
+        //Player playerOnTheBoard = Instantiate(player.GetComponent<Player>());
+        //Battle battleStart = new Battle(player.GetComponent<Player>(), Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 4))), moveToWhere);
     }
 
     public void buttonHasBeenTouched(){

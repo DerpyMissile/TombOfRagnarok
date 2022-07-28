@@ -16,7 +16,7 @@ public class Battle : MonoBehaviour
     int playerMana = 0;
     int enemyMana = 0;
     int maxMana = 0;
-    [SerializeField] Player playerCharac;
+    [SerializeField] Rigidbody playerCharac;
     //[SerializeField] Enemy enemyCharac;
     List<Enemy> enemies = new List<Enemy>();
     bool placedCharac = false;
@@ -26,8 +26,7 @@ public class Battle : MonoBehaviour
     public BattleState state;
     GameObject moveToWhere;
 
-    public Battle(Player mc, int howManyEnemies, GameObject whatTile){
-        playerCharac = mc;
+    public Battle(int howManyEnemies, GameObject whatTile){
         for(int i=0; i<howManyEnemies; ++i){
             enemies.Add(new Enemy());
         }
@@ -47,7 +46,7 @@ public class Battle : MonoBehaviour
     IEnumerator goMove(){
         //Debug.Log(movesLeft);
         //yield return new WaitUntil(() => selectedNewMovementLocation);
-        myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
+        myText.text = "Where should I go?\nI have " + Player.getMovement() + " spaces left to move.";
         while((movesLeft>0) && (state == BattleState.MOVEPLAYER)){
             yield return new WaitUntil(() => selectedNewMovementLocation);
             Vector3 playerLastPos = playerCharac.transform.position;
@@ -56,7 +55,7 @@ public class Battle : MonoBehaviour
             Debug.Log(Mathf.RoundToInt(playerCharac.transform.position.z));
             Debug.Log(Mathf.RoundToInt(moveToWhere.transform.position.x));
             Debug.Log(Mathf.RoundToInt(playerCharac.transform.position.x));
-            myText.text = "Where should I go?\nI have " + playerCharac.getMovement() + " spaces left to move.";
+            myText.text = "Where should I go?\nI have " + Player.getMovement() + " spaces left to move.";
             myText2.text = "Movement Phase";
             if(Mathf.RoundToInt(moveToWhere.transform.position.x) == Mathf.RoundToInt(playerCharac.transform.position.x)){
                 if(Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerCharac.transform.position.z)) <= movesLeft){
@@ -79,7 +78,7 @@ public class Battle : MonoBehaviour
             movesLeft -= Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.z) - Mathf.RoundToInt(playerLastPos.z)) + Mathf.Abs(Mathf.RoundToInt(moveToWhere.transform.position.x) - Mathf.RoundToInt(playerLastPos.x));
             selectedNewMovementLocation = false;
         }
-        movesLeft = playerCharac.getMovement();
+        movesLeft = Player.getMovement();
         StopCoroutine(goMove());
     }
 
@@ -104,7 +103,7 @@ public class Battle : MonoBehaviour
     }
 
     void checkIfOver(){
-        if(playerCharac.getHP() <= 0){
+        if(Player.getHP() <= 0){
             battleOver = true;
             return;
         }
@@ -135,7 +134,7 @@ public class Battle : MonoBehaviour
         myText3.text = "Current Mana: " + playerMana;
         nextPhase.onClick.AddListener(increasePhase);
         state = BattleState.START;
-        movesLeft = playerCharac.getMovement();
+        movesLeft = Player.getMovement();
         StartCoroutine(setUpBoard());
     }
 

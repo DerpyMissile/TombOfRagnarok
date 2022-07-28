@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour
+public static class Player
 {
-    [SerializeField] int hp;
-    [SerializeField] int atk;
-    [SerializeField] int movement;
-    [SerializeField] int money = 0;
+    static int hp = 1;
+    static int atk = 1;
+    static int movement = 1;
+    static int money = 0;
 
-    public Player(){
-        hp = 1;
-        atk = 1;
-        movement = 1;
-    }
-
-    public Player setStats(String playerChara){
+    public static void setStats(String playerChara){
         switch(playerChara){
             case "Paladin":
             hp = 20;
@@ -66,33 +60,21 @@ public class Player : MonoBehaviour
             movement = 1;
             break;
         }
-        return this;
     }
 
-    public int getHP(){
+    public static int getHP(){
         return hp;
     }
 
-    public int getAtk(){
+    public static int getAtk(){
         return atk;
     }
 
-    public int getMovement(){
+    public static int getMovement(){
         return movement;
     }
 
-    public void increaseMoney(int howMuch){
+    public static void increaseMoney(int howMuch){
         money += howMuch;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

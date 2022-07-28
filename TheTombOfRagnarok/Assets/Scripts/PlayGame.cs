@@ -33,7 +33,7 @@ public class PlayGame : MonoBehaviour
 
     void selectClass(string whatClass){
         //ourCharas.Add(new Player().setStats(whatClass));
-        ourCharas.GetComponent<Player>().setStats(whatClass);
+        Player.setStats(whatClass);
         StartCoroutine(actuallyStartGame());
         //SceneManager.LoadScene("Board");
         //SceneManager.MoveGameObjectToScene(ourCharas, SceneManager.GetSceneByName("Board"));
