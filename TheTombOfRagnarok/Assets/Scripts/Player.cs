@@ -9,6 +9,7 @@ public static class Player
     static int atk = 1;
     static int movement = 1;
     static int money = 0;
+    static Vector3 position = new Vector3(0, 0, 0);
 
     public static void setStats(String playerChara){
         switch(playerChara){
