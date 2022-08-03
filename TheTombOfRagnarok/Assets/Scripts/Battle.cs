@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { START, MOVEPLAYER, SUMMONPLAYER, ATTACKPLAYER, MOVEENEMY, SUMMONENEMY, ATTACKENEMY, WON, LOST }
+public enum BattleState { START, MOVEPLAYER, ATTACKPLAYER, MOVEENEMY, SUMMONENEMY, ATTACKENEMY, WON, LOST }
 
 public class Battle : MonoBehaviour
 {
@@ -25,6 +25,8 @@ public class Battle : MonoBehaviour
     bool battleOver = false;
     public BattleState state;
     GameObject moveToWhere;
+    [SerializeField] List<Card> hand = new List<Card>();
+    [SerializeField] List<Card> battleDeck = Deck.cards;
 
     public Battle(int howManyEnemies, GameObject whatTile){
         for(int i=0; i<howManyEnemies; ++i){
@@ -80,14 +82,22 @@ public class Battle : MonoBehaviour
         }
         movesLeft = Player.getMovement();
         StopCoroutine(goMove());
+        StartCoroutine(playCards());
     }
 
-    void summonIfWant(){
-        
-    }
-
-    void attackIfWant(){
-
+    IEnumerator playCards(){
+        while(state == BattleState.ATTACKPLAYER){
+            if(maxMana == 0){
+                for(int i=0; i<5; ++i){
+                    if(battleDeck.Count == 0){
+                        break;
+                    }
+                    int randNum = Mathf.RoundToInt(Random.Range(0, battleDeck.Count));
+                    hand.Add(battleDeck[randNum]);
+                    battleDeck.RemoveAt(randNum);
+                }
+            }
+        }
     }
 
     void goMoveEnemy(){

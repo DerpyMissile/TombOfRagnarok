@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    string name;
-    int atk;
-    int hp;
-    int movement;
-    string type;
+    protected string name;
+    protected int atk;
+    protected int hp;
+    protected int movement;
+    protected int range;
+    protected string type;
 }

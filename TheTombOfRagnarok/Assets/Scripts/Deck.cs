@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class Deck
 {
-    static List<Card> cards = new List<Card>();
+    static public List<Card> cards = new List<Card>();
 }
