@@ -32,12 +32,67 @@ public class PlayGame : MonoBehaviour
     }
 
     void selectClass(string whatClass){
-        //ourCharas.Add(new Player().setStats(whatClass));
         Player.setStats(whatClass);
+
+        switch(whatClass){
+            case "Paladin":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case "Druid":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case "Necromancer":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case "Ranger":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case "Rogue":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case "Mage":
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+
+            case null:
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Smite());
+            Deck.addCard(new Incite());
+            Deck.addCard(new Incite());
+            break;
+        }
+
         StartCoroutine(actuallyStartGame());
-        //SceneManager.LoadScene("Board");
-        //SceneManager.MoveGameObjectToScene(ourCharas, SceneManager.GetSceneByName("Board"));
-        //SceneManager.UnloadScene("StartMenu");
     }
 
     IEnumerator actuallyStartGame(){

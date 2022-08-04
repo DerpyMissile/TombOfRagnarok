@@ -10,6 +10,8 @@ public static class Player
     static int movement = 1;
     static int money = 0;
     static Vector3 position = new Vector3(0, 0, 0);
+    static string biome = "Starting";
+    static int lastRoll;
 
     public static void setStats(String playerChara){
         switch(playerChara){
@@ -77,5 +79,25 @@ public static class Player
 
     public static void increaseMoney(int howMuch){
         money += howMuch;
+    }
+
+    public static void setPosition(Vector3 currPos){
+        position = currPos;
+    }
+
+    public static string getBiome(){
+        return biome;
+    }
+
+    public static int getLastRoll(){
+        return lastRoll;
+    }
+
+    public static void setLastRoll(int roll){
+        lastRoll = roll;
+    }
+
+    public static void setBiome(string newBiome){
+        biome = newBiome;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Overworld : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class Overworld : MonoBehaviour
         if(movesLeft > 10){
             Player.increaseMoney(movesLeft);
             movesLeft = 0;
+        }
+        if(movesLeft == 0){
+            Player.setLastRoll(1);
+        }else{
+            Player.setLastRoll(movesLeft);
         }
         while(movesLeft>0){
             yield return new WaitUntil(() => gotNewLocation);
@@ -71,10 +77,13 @@ public class Overworld : MonoBehaviour
         }
         gotNewLocation = false;
         Debug.Log("end end turn kachow");
+        //this is where i check which biome player is in
 
         //battle start nyoooooom
-        //Player playerOnTheBoard = Instantiate(player.GetComponent<Player>());
+        Player.setPosition(player.transform.position);
         //Battle battleStart = new Battle(player.GetComponent<Player>(), Mathf.RoundToInt(Mathf.Ceil(Random.Range(0, 4))), moveToWhere);
+        StartCoroutine(actuallyStartBattle());
+        //Player playerOnTheBoard = Instantiate(player.GetComponent<Player>());
     }
 
     public void buttonHasBeenTouched(){
@@ -83,6 +92,16 @@ public class Overworld : MonoBehaviour
 
     public void buttonHasNotBeenTouched(){
         touchedButton = false;
+    }
+
+    IEnumerator actuallyStartBattle(){
+        Scene currentScene = SceneManager.GetActiveScene();
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Combat", LoadSceneMode.Additive);
+        while(!asyncload.isDone){
+            yield return null;
+        }
+        PlayerPrefs.SetInt("UnitySelectMonitor", 2);
+        SceneManager.UnloadSceneAsync(currentScene);
     }
 
     

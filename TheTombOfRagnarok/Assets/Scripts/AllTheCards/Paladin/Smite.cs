@@ -10,6 +10,6 @@ public class Smite : Card
         hp = 0;
         movement = 0;
         range = 1;
-        type = "Spell";
+        type = "Boon";
     }
 }

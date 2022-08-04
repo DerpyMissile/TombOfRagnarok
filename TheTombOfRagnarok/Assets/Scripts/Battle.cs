@@ -27,12 +27,14 @@ public class Battle : MonoBehaviour
     GameObject moveToWhere;
     [SerializeField] List<Card> hand = new List<Card>();
     [SerializeField] List<Card> battleDeck = Deck.cards;
+    [SerializeField] GameObject actualHand;
+    [SerializeField] GameObject genericCard;
 
-    public Battle(int howManyEnemies, GameObject whatTile){
-        for(int i=0; i<howManyEnemies; ++i){
-            enemies.Add(new Enemy());
-        }
-    }
+    // public Battle(int howManyEnemies, GameObject whatTile){
+    //     for(int i=0; i<howManyEnemies; ++i){
+    //         enemies.Add(new Enemy());
+    //     }
+    // }
 
     void enemyTurn(){
         maxMana++;
@@ -86,6 +88,7 @@ public class Battle : MonoBehaviour
     }
 
     IEnumerator playCards(){
+        yield return new WaitUntil(() => state == BattleState.ATTACKPLAYER);
         while(state == BattleState.ATTACKPLAYER){
             if(maxMana == 0){
                 for(int i=0; i<5; ++i){
@@ -95,9 +98,12 @@ public class Battle : MonoBehaviour
                     int randNum = Mathf.RoundToInt(Random.Range(0, battleDeck.Count));
                     hand.Add(battleDeck[randNum]);
                     battleDeck.RemoveAt(randNum);
+                    var newCardInHand = Instantiate(genericCard, new Vector3(0, 0, 0), Quaternion.identity);
+                    newCardInHand.transform.parent = actualHand.transform;
                 }
             }
         }
+        StopCoroutine(playCards());
     }
 
     void goMoveEnemy(){
@@ -139,6 +145,33 @@ public class Battle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for(int i=0; i<Player.getLastRoll(); ++i){
+            switch(Player.getBiome()){
+                case "Waterfall":
+                enemies.Add(new Enemy());
+                break;
+
+                case "Highland":
+                enemies.Add(new Enemy());
+                break;
+
+                case "Ragnarcon":
+                enemies.Add(new Enemy());
+                break;
+
+                case "Cavern":
+                enemies.Add(new Enemy());
+                break;
+
+                case "Dark":
+                enemies.Add(new Enemy());
+                break;
+
+                case "Chorus":
+                enemies.Add(new Enemy());
+                break;
+            }
+        }
         myText.text = "Pick a square to place your player!";
         myText2.text = "Placement Phase";
         myText3.text = "Current Mana: " + playerMana;
